@@ -9,22 +9,11 @@ public class Main2 {
         String username = args[0];        // username
         String password = args[1]; // password
 
-
-        String allProducts = "SELECT * FROM products";
         ResultSet results = null;
         Connection connection = null;
         PreparedStatement stmt = null;
-        Statement statement = null;
 
         try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("1-Display all products\n2-Display all customers\n0-Exit");
-            int first = sc.nextInt(); sc.nextLine();
-            switch (first){
-                case 1:
-                     results = statement.executeQuery(allProducts);
-                    System.out.println("ID |     Name     | SupplierID | CategoryID |    QuantityPerUnit   | UnitPrice | UnitsInStock | UnitsOnOrder | ReorderLevel | Discontinued");
-                    //while ()
-            }
             System.out.print("Enter product ID: ");
             int id = sc.nextInt();
             sc.nextLine();
@@ -36,7 +25,7 @@ public class Main2 {
             connection = DriverManager.getConnection(url, username, password);
 
             // 3. Create statement и request
-            statement = connection.createStatement();
+            //Statement statement = connection.createStatement();
             String query = "SELECT ProductID, ProductName, ROUND(UnitPrice, 2) AS UnitPrice, UnitsInStock FROM products WHERE ProductId = ?";
 
             //For secure requests
