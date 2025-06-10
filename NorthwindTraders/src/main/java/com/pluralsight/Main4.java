@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.sql.*;
 import java.util.Scanner;
 
@@ -10,23 +12,29 @@ public class Main4 {
         String user = args[0];
         String password = args[1];
 
+        BasicDataSource bds = new BasicDataSource();
+        bds.setUrl(url);
+        bds.setUsername(user);
+        bds.setPassword(password);
+
         String query1 = "SELECT * FROM Products";
         String query2 = "SELECT * FROM Customers";
         String query3 = "SELECT * FROM categories";
         String query4 = "SELECT * FROM categories WHERE CategoryID = ?";
         ResultSet results = null;
-        Connection connection = null;
         PreparedStatement statement = null;
 
-        try {
+        try (Connection connection = bds.getConnection()){
             boolean run = true;
             while (run){
                 System.out.println("\n1-Display all products\n2-Display all customers\n3-Display all categories\n4-Search by category ID\n0-Exit");
                 int choice = sc.nextInt();
                 switch (choice) {
                     case 1:
-                        // Establishing connection
-                        connection = DriverManager.getConnection(url, user, password);
+
+                        //connection = DriverManager.getConnection(url, user, password);
+
+
                         statement = connection.prepareStatement(query1);
 
                         results = statement.executeQuery(); // Executing query
@@ -44,7 +52,7 @@ public class Main4 {
                         }
                         break;
                     case 2:
-                        connection = DriverManager.getConnection(url, user, password);
+                        //connection = DriverManager.getConnection(url, user, password);
                         statement = connection.prepareStatement(query2);
 
                         results = statement.executeQuery(); // Executing query
@@ -64,7 +72,7 @@ public class Main4 {
                         break;
 
                     case 3:
-                        connection = DriverManager.getConnection(url, user, password);
+                        //connection = DriverManager.getConnection(url, user, password);
                         statement = connection.prepareStatement(query3);
 
                         results = statement.executeQuery(); // Executing query
@@ -85,7 +93,7 @@ public class Main4 {
                         System.out.print("Enter Category ID - ");
                         int catId = sc.nextInt(); sc.nextLine();
 
-                        connection = DriverManager.getConnection(url, user, password);
+                       // connection = DriverManager.getConnection(url, user, password);
                         statement = connection.prepareStatement(query4);
                         statement.setInt(1,catId);
 
@@ -127,13 +135,7 @@ public class Main4 {
                     e.printStackTrace();
                 }
             }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+
         }
     }
 }
